@@ -2,7 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
+import path from 'path';
 import authRoutes from './routes/auth.routes';
 import consultationRoutes from './routes/consultation.routes';
 
@@ -41,9 +43,13 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use(cookieParser()); // Parser de cookies (necessário para ler req.cookies)
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Servir arquivos estáticos
+app.use('/uploads', express.static(path.join(__dirname, '..' ,'uploads')));
 
 // Rotas
 app.use('/api/auth', authRoutes);

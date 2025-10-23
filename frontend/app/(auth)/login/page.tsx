@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,8 +17,16 @@ import { useAuthStore } from '@/store/authStore';
 export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const { setAuth } = useAuthStore();
+  const { setAuth, isAuthenticated, _hasHydrated } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
+
+  // Se já estiver logado, redireciona para dashboard
+  useEffect(() => {
+    if (_hasHydrated && isAuthenticated) {
+      console.log('[Login Page] Usuário já está logado, redirecionando para /dashboard');
+      router.push('/dashboard');
+    }
+  }, [isAuthenticated, _hasHydrated, router]);
 
   const {
     register,
@@ -33,7 +41,8 @@ export default function LoginPage() {
       setIsLoading(true);
       const response = await authService.login(data);
 
-      setAuth(response.user, response.token);
+      // O token vem no cookie HTTP-only, apenas salvamos o usuário no estado
+      setAuth(response.user);
 
       toast({
         title: 'Login realizado!',
@@ -112,7 +121,7 @@ export default function LoginPage() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full cursor-pointer" disabled={isLoading}>
               {isLoading ? 'Entrando...' : 'Entrar'}
             </Button>
             <p className="text-center text-sm text-gray-600">

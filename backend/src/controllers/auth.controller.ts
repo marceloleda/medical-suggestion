@@ -15,10 +15,19 @@ export class AuthController {
       // Registrar usuário
       const result = await authService.register(validatedData);
 
+      // Definir o token como um cookie HTTP-only
+      res.cookie('token', result.token, {
+        httpOnly: true, // O cookie não pode ser acessado via JavaScript no navegador
+        secure: process.env.NODE_ENV === 'production', // Usar apenas em HTTPS em produção
+        maxAge: 24 * 60 * 60 * 1000, // 1 dia de validade
+        path: '/', // Disponível para todas as rotas
+        sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax', // Em dev usa lax para permitir cross-port
+        domain: process.env.NODE_ENV === 'production' ? undefined : 'localhost', // Em dev usa localhost para compartilhar entre portas
+      });
+
       return res.status(201).json({
         message: 'Usuário registrado com sucesso',
         user: result.user,
-        token: result.token,
       });
     } catch (error) {
       if (error instanceof AppError) {
@@ -64,10 +73,19 @@ export class AuthController {
       // Fazer login
       const result = await authService.login(validatedData);
 
+      // Definir o token como um cookie HTTP-only
+      res.cookie('token', result.token, {
+        httpOnly: true, // O cookie não pode ser acessado via JavaScript no navegador
+        secure: process.env.NODE_ENV === 'production', // Usar apenas em HTTPS em produção
+        maxAge: 24 * 60 * 60 * 1000, // 1 dia de validade
+        path: '/', // Disponível para todas as rotas
+        sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax', // Em dev usa lax para permitir cross-port
+        domain: process.env.NODE_ENV === 'production' ? undefined : 'localhost', // Em dev usa localhost para compartilhar entre portas
+      });
+
       return res.status(200).json({
         message: 'Login realizado com sucesso',
         user: result.user,
-        token: result.token,
       });
     } catch (error) {
       if (error instanceof AppError) {
@@ -121,5 +139,10 @@ export class AuthController {
       console.error('Erro ao buscar perfil:', error);
       return res.status(500).json({ error: 'Erro interno do servidor' });
     }
+  }
+
+  async logout(req: Request, res: Response) {
+    res.clearCookie('token', { path: '/' });
+    return res.status(200).json({ message: 'Logout realizado com sucesso' });
   }
 }

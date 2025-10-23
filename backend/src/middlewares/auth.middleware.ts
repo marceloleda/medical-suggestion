@@ -9,16 +9,10 @@ export const authMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader) {
-      throw new AppError('Token não fornecido', 401);
-    }
-
-    const [, token] = authHeader.split(' ');
+    const token = req.cookies.token; // Obter token do cookie
 
     if (!token) {
-      throw new AppError('Token malformatado', 401);
+      throw new AppError('Token não fornecido', 401);
     }
 
     const decoded = verifyToken(token);
