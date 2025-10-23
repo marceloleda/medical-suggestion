@@ -41,7 +41,7 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_REGION: ${AWS_REGION:-us-east-1}
       AWS_BUCKET_NAME: ${AWS_BUCKET_NAME:-medical-ai-audio}
-      CORS_ORIGIN: http://localhost:3000
+      CORS_ORIGIN: http://localhost:3002
     ports:
       - "3001:3001"
     volumes:

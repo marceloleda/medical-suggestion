@@ -13,10 +13,34 @@ const PORT = process.env.PORT || 3001;
 
 // Middlewares globais
 app.use(helmet());
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+
+// CORS configurado para desenvolvimento (aceita qualquer porta do localhost)
+const corsOptions = {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    // Permite requisições sem origin (como Postman, curl, etc)
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    // Em desenvolvimento, aceita qualquer localhost
+    if (process.env.NODE_ENV === 'development') {
+      if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
+        return callback(null, true);
+      }
+    }
+
+    // Em produção, verifica a origin específica
+    const allowedOrigin = process.env.CORS_ORIGIN;
+    if (allowedOrigin && origin === allowedOrigin) {
+      return callback(null, true);
+    }
+
+    callback(new Error('Not allowed by CORS'));
+  },
   credentials: true,
-}));
+};
+
+app.use(cors(corsOptions));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

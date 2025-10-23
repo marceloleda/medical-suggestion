@@ -24,9 +24,33 @@ export class AuthController {
       if (error instanceof AppError) {
         return res.status(error.statusCode).json({ error: error.message });
       }
-      if (error instanceof Error && error.name === 'ZodError') {
-        return res.status(400).json({ error: 'Dados inválidos', details: error });
+
+      // Tratamento específico para erros de validação Zod
+      if (error && typeof error === 'object' && 'issues' in error) {
+        const zodError = error as any;
+        const firstError = zodError.issues[0];
+        const fieldName = firstError.path[0];
+        const errorMessage = firstError.message;
+
+        const fieldTranslation: Record<string, string> = {
+          email: 'E-mail',
+          password: 'Senha',
+          name: 'Nome',
+          crm: 'CRM',
+        };
+
+        const translatedField = fieldTranslation[fieldName] || fieldName;
+
+        return res.status(400).json({
+          error: `${translatedField}: ${errorMessage}`,
+          field: fieldName,
+          details: zodError.issues.map((issue: any) => ({
+            field: issue.path[0],
+            message: issue.message,
+          }))
+        });
       }
+
       console.error('Erro no registro:', error);
       return res.status(500).json({ error: 'Erro interno do servidor' });
     }
@@ -49,9 +73,31 @@ export class AuthController {
       if (error instanceof AppError) {
         return res.status(error.statusCode).json({ error: error.message });
       }
-      if (error instanceof Error && error.name === 'ZodError') {
-        return res.status(400).json({ error: 'Dados inválidos', details: error });
+
+      // Tratamento específico para erros de validação Zod
+      if (error && typeof error === 'object' && 'issues' in error) {
+        const zodError = error as any;
+        const firstError = zodError.issues[0];
+        const fieldName = firstError.path[0];
+        const errorMessage = firstError.message;
+
+        const fieldTranslation: Record<string, string> = {
+          email: 'E-mail',
+          password: 'Senha',
+        };
+
+        const translatedField = fieldTranslation[fieldName] || fieldName;
+
+        return res.status(400).json({
+          error: `${translatedField}: ${errorMessage}`,
+          field: fieldName,
+          details: zodError.issues.map((issue: any) => ({
+            field: issue.path[0],
+            message: issue.message,
+          }))
+        });
       }
+
       console.error('Erro no login:', error);
       return res.status(500).json({ error: 'Erro interno do servidor' });
     }
