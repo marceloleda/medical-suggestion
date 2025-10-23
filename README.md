@@ -140,34 +140,19 @@ medical-ai-app/
 
 ---
 
-## Funcionalidades Planejadas
+## Funcionalidades
 
-### Fase 1 - Setup Inicial ✅
-- [x] Estrutura do projeto
-- [x] Configuração Docker
-- [x] Schema do banco de dados
+**Implementado:**
+- ✅ Autenticação JWT com cookies HTTP-only
+- ✅ Registro e login de médicos
+- ✅ Proteção de rotas
+- ✅ Persistência de sessão
 
-### Fase 2 - Autenticação ✅
-- [x] Registro de médicos
-- [x] Login/Logout
-- [x] Proteção de rotas
-- [x] Cookie HTTP-only para token JWT
-- [x] Persistência de sessão
-
-### Fase 3 - Gravação de Consultas
-- [ ] Gravação de áudio
-- [ ] Upload para S3/R2
-- [ ] Transcrição via Whisper
-
-### Fase 4 - Diagnóstico IA
-- [ ] Análise de transcrição
-- [ ] Geração de sugestões
-- [ ] Confirmação pelo médico
-
-### Fase 5 - Dashboard
-- [ ] Listagem de consultas
-- [ ] Visualização de diagnósticos
-- [ ] Relatórios
+**Em desenvolvimento:**
+- Gravação de consultas com áudio
+- Transcrição automática (Whisper API)
+- Sugestões de diagnóstico (GPT-4)
+- Dashboard de consultas
 
 ---
 
@@ -264,44 +249,30 @@ NEXT_PUBLIC_API_URL=http://localhost:3001/api
 
 ---
 
-## Contribuindo
+---
 
-1. Fork o projeto
-2. Crie uma branch (`git checkout -b feature/nova-funcionalidade`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
-4. Push para a branch (`git push origin feature/nova-funcionalidade`)
-5. Abra um Pull Request
+## Desenvolvimento
+
+Comandos úteis durante o desenvolvimento:
+
+```bash
+make logs              # Ver logs de todos os serviços
+make prisma-studio     # Abrir interface gráfica do banco
+make backend-shell     # Acessar shell do container backend
+make db-reset          # Resetar banco (cuidado!)
+```
 
 ---
 
-## Licença
+## Próximos Passos
 
-Este projeto é privado e confidencial.
-
----
-
-## Suporte
-
-Para dúvidas sobre:
-- **Docker:** Use os comandos `make help` para ver todas as opções disponíveis
-- **Desenvolvimento:** Consulte a documentação inline no código
-- **Issues:** Abra uma issue no repositório
+- Gravador de áudio no frontend (botão gravar/parar)
+- Upload de áudio para S3/Cloudflare R2
+- Transcrição automática via Whisper
+- Análise de sintomas e sugestões de diagnóstico com GPT-4
+- Listagem e filtros de consultas anteriores
+- Exportar histórico em PDF
 
 ---
 
-## Roadmap
-
-- [ ] Implementar autenticação completa
-- [ ] Sistema de gravação de áudio
-- [ ] Integração com Whisper API
-- [ ] Integração com GPT-4 para diagnósticos
-- [ ] Dashboard com analytics
-- [ ] Exportação de relatórios
-- [ ] Modo offline
-- [ ] App mobile (React Native)
-
----
-
-**Status:** 🚧 Em desenvolvimento ativo
-
-**Última atualização:** 2025
+Status: Em desenvolvimento
