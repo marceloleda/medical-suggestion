@@ -17,14 +17,12 @@ RUN npm ci
 # Copiar código fonte
 COPY . .
 
-# Gerar Prisma Client
-RUN npx prisma generate
-
 # Expor porta
 EXPOSE 3001
 
 # Comando para desenvolvimento (com hot-reload via tsx watch)
-CMD ["npm", "run", "dev"]
+# Gera o Prisma Client e inicia o servidor
+CMD ["sh", "-c", "npx prisma generate && npm run dev"]
 
 # ================================
 # Estágio de Builder (para produção)

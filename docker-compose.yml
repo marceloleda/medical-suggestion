@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: medical_dev_2024
       POSTGRES_DB: medical_ai_db
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -70,7 +70,7 @@ services:
       NODE_ENV: development
       NEXT_PUBLIC_API_URL: http://localhost:3001/api
     ports:
-      - "3000:3000"
+      - "3002:3000"
     volumes:
       # Bind mount para hot-reload
       - ./frontend/app:/app/app
