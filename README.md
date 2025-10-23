@@ -43,8 +43,6 @@ make migrate
 # Backend:  http://localhost:3001
 ```
 
-**Documentação completa:** [DOCKER.md](./DOCKER.md)
-
 **Comandos úteis:**
 - `make help` - Ver todos os comandos
 - `make logs` - Ver logs
@@ -137,7 +135,6 @@ medical-ai-app/
 │
 ├── docker-compose.yml
 ├── Makefile
-├── DOCKER.md
 └── README.md
 ```
 
@@ -150,10 +147,12 @@ medical-ai-app/
 - [x] Configuração Docker
 - [x] Schema do banco de dados
 
-### Fase 2 - Autenticação
-- [ ] Registro de médicos
-- [ ] Login/Logout
-- [ ] Proteção de rotas
+### Fase 2 - Autenticação ✅
+- [x] Registro de médicos
+- [x] Login/Logout
+- [x] Proteção de rotas
+- [x] Cookie HTTP-only para token JWT
+- [x] Persistência de sessão
 
 ### Fase 3 - Gravação de Consultas
 - [ ] Gravação de áudio
@@ -284,8 +283,8 @@ Este projeto é privado e confidencial.
 ## Suporte
 
 Para dúvidas sobre:
-- **Docker:** Veja [DOCKER.md](./DOCKER.md)
-- **Desenvolvimento:** Consulte a documentação inline
+- **Docker:** Use os comandos `make help` para ver todas as opções disponíveis
+- **Desenvolvimento:** Consulte a documentação inline no código
 - **Issues:** Abra uma issue no repositório
 
 ---
