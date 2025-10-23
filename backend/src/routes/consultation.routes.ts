@@ -1,10 +1,14 @@
 import { Router } from 'express';
 import { ConsultationController } from '../controllers/consultation.controller';
+import { TranscriptionController } from '../controllers/transcription.controller';
+import { DiagnosisController } from '../controllers/diagnosis.controller';
 import { authMiddleware } from '../middlewares/auth.middleware';
 import { upload } from '../config/multer';
 
 const router = Router();
 const consultationController = new ConsultationController();
+const transcriptionController = new TranscriptionController();
+const diagnosisController = new DiagnosisController();
 
 // Todas as rotas são protegidas
 router.use(authMiddleware);
@@ -21,5 +25,13 @@ router.delete('/:id', (req, res) => consultationController.delete(req, res));
 router.post('/:id/audio', upload.single('audio'), (req, res) =>
   consultationController.uploadAudio(req, res)
 );
+
+// Transcrição
+router.post('/:id/transcribe', (req, res) => transcriptionController.transcribe(req, res));
+
+// Diagnóstico
+router.post('/:id/diagnosis', (req, res) => diagnosisController.generate(req, res));
+router.patch('/:id/diagnosis', (req, res) => diagnosisController.update(req, res));
+router.post('/:id/diagnosis/confirm', (req, res) => diagnosisController.confirm(req, res));
 
 export default router;
