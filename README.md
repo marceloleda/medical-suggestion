@@ -262,17 +262,3 @@ make backend-shell     # Acessar shell do container backend
 make db-reset          # Resetar banco (cuidado!)
 ```
 
----
-
-## Próximos Passos
-
-- Gravador de áudio no frontend (botão gravar/parar)
-- Upload de áudio para S3/Cloudflare R2
-- Transcrição automática via Whisper
-- Análise de sintomas e sugestões de diagnóstico com GPT-4
-- Listagem e filtros de consultas anteriores
-- Exportar histórico em PDF
-
----
-
-Status: Em desenvolvimento
